@@ -12,17 +12,17 @@ const cors = require('cors');
 app.use(cors());
 
 // Initialize the main project folder
-app.use(express.static('website'));
+app.use(static('website'));
 
 // Setup Server
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 // Callback console.log to debug
 const server = app.listen(port, () => console.log(`Listening on port ${port}...`));
 
 // GET route
 // Callback function to complete GET '/all'
-app.get('/', sendData);
+app.get('/all', sendData);
 
 function sendData (request, response) {
   response.send(projectData);
