@@ -6,15 +6,26 @@ const express = require('express');
 // Start up an instance of app
 const app = express();
 /* Middleware*/
-//Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-// Cors for cross origin allowance
 const cors = require('cors');
+app.use(cors());
+
 // Initialize the main project folder
 app.use(express.static('website'));
 
-const port = process.env.PORT || 3000;
 // Setup Server
+const port = process.env.PORT || 3000;
+
+// Callback console.log to debug
 const server = app.listen(port, () => console.log(`Listening on port ${port}...`));
+
+// GET route
+// Callback function to complete GET '/all'
+app.get('/', sendData);
+
+function sendData (request, response) {
+  response.send(projectData);
+};
+// POST route
+app.post('/', (req, res) => res.send('POST received'));
