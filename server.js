@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.static('website'));
 
 // Setup Server
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Callback console.log to debug
 const server = app.listen(port, () => {
@@ -24,11 +24,14 @@ const server = app.listen(port, () => {
 });
 
 // GET route
-// Callback function to complete GET '/all'
-app.get('/all', sendData);
+app.get('/', sendData);
 
-function sendData (request, response) {
-  response.send(projectData);
+// Callback function to complete GET '/all'
+function sendData(request, response) {
+  return response.send(projectData);
 };
+
 // POST route
-app.post('/', (req, res) => res.send('POST received'));
+app.post('/', (req, res) => {
+  projectData.push(req.body);
+});
