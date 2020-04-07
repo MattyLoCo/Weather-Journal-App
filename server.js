@@ -32,6 +32,10 @@ function sendData(request, response) {
 };
 
 // POST route
-app.post('/', (req, res) => {
+app.post('/', addPost );
+  
+function addPost (req, res) {
   projectData.push(req.body);
-});
+  // Debug code console test
+  console.log(projectData);
+};
