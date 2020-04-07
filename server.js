@@ -38,4 +38,5 @@ function addPost (req, res) {
   projectData.push(req.body);
   // Debug code console test
   console.log(projectData);
+  return res.send(req.body);
 };
