@@ -12,7 +12,7 @@ let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 // Create event listener to trigger functions
 document.getElementById('generate').addEventListener('click', postData);
 
-// Function that gets weather data 
+// Get and post weather and user data
 const postData = async () => {
     
   let zip = document.getElementById('zip').value; 
@@ -29,16 +29,19 @@ const postData = async () => {
   });
       try {
         const newData = await function() {
-          //Build entry of date, temp, user content
-          const jWeatherData = weatherData[temp].json();
-          return {'Date': newDate, 'Temp': jWeatherData, 'Feelings': content};                    
+          //  Build entry of date, temp, user content
+          const tempData = await function tempConverter(weatherData) {
+            const temp = weatherData[main[0]];
+            return ((temp - 273.15)*1.8) + 32;
+          }
+          return {'Date': newDate, 'Temp': tempData, 'Feelings': content};                    
         }  
         console.log(`Successful Retrieval: ${newData}`);       
       } catch(error) {
         console.log('Retrieval Error:', error);       
       };  
 
-  // Post weather and user data to app endpoint
+  //  Post weather and user data to app endpoint
   await fetch('/server.js', {
 
     method: 'POST',
@@ -56,7 +59,7 @@ const postData = async () => {
     console.error('Post Error:', error);
   });
   
-  // Fetch the data from the app endpoint
+  //  Fetch the data from the app endpoint
   await fetch('/server.js', {
 
     method: 'GET',
@@ -75,6 +78,7 @@ const postData = async () => {
     console.error('Retrieval Error:', error);
   });
 
+//  Update UI with fetched data
 
 
 //  1.User enters its zipcode and its feelings.
