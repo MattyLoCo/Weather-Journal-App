@@ -28,10 +28,10 @@ const postData = async () => {
       body: JSON.stringify(weatherData),
   });
       try {
-        const newData = await function() {
+        const newData = function() {
           //  Build entry of date, temp, user content
-          const tempData = await function tempConverter(weatherData) {
-            const temp = weatherData[main[0]];
+          const tempData = function tempConverter(weatherData) {
+            const temp = weatherData[main[0]].json();
             return ((temp - 273.15)*1.8) + 32;
           }
           return {'Date': newDate, 'Temp': tempData, 'Feelings': content};                    
@@ -67,21 +67,23 @@ const postData = async () => {
     headers: {
         'Content-Type': 'application/json',
     },
-    body: JSON.stringify(projectData),
+    body: JSON.stringify(projectData[0]),
   })      
   .then((response) => response.json())
   .then((projectData) => {
     console.log(`Successful Retrieval: ${projectData}`);
     return projectData;
-  })  
+  })
+  .then((uiUpdate))  
   .catch((error) => {
     console.error('Retrieval Error:', error);
   });
 
-//  Update UI with fetched data
+//  Update UI with fetched data from projectData object
+const uiUpdate = (projectData) => {
 
-
-//  1.User enters its zipcode and its feelings.
-//  2.Weather data is fetched from API 
-//  3.Then three fields : Date,Temperature and User Respose posted to the local server using POST 
-//  4.The last step is fetch data from local server by GET method and update your UI
+  document.getElementById('date').innerHTML = JSON.stringify(projectData[0]);
+  document.getElementById('temp').innerHTML = JSON.stringify(projectData[1]);
+  document.getElementById('content').innerHTML = JSON.stringify(projectData[2]);
+  return;
+}
