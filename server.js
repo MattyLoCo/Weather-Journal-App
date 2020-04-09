@@ -1,9 +1,9 @@
-// Setup empty JS object to act as endpoint for all routes
+//  Setup empty JS object to act as endpoint for all routes
 projectData = {};
 
-// Require Express to run server and routes
+//  Require Express to run server and routes
 const express = require('express');
-// Start up an instance of app
+//  Start up an instance of app
 const app = express();
 /* Middleware*/
 const bodyParser = require('body-parser');
@@ -12,31 +12,39 @@ app.use(bodyParser.json());
 const cors = require('cors');
 app.use(cors());
 
-// Initialize the main project folder
+//  Initialize the main project folder
 app.use(express.static('website'));
 
-// Setup Server
+//  Setup Server
 const port = process.env.PORT || 3000;
 
-// Callback console.log to debug
+//  Callback console.log to debug
 const server = app.listen(port, () => {
   return console.log(`Listening on port ${port}...`);
 });
 
-// GET route
-app.get('/', sendData);
+//  GET route
+app.get('/all', sendData);
 
-// Callback function to complete GET '/all'
+//  Callback function to complete GET '/all'
 function sendData(request, response) {
   return response.send(projectData);
 };
 
-// POST route
-app.post('/', addPost );
-  
+//  POST route
+app.post('/add', addPost );
+
+
+//  Callback function to complete POST '/add'
 function addPost (req, res) {
+
+  projectData.temp = req.body.temp;
+  projectData.date = req.body.date;
+  projectData.content = req.body.content;
+
   projectData.push(req.body);
-  // Debug code console test
+
+  //  Debug code console test
   console.log(projectData);
   return res.send(req.body);
 };

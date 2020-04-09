@@ -42,7 +42,7 @@ const postData = async () => {
       };  
 
   //  Post weather and user data to app endpoint
-  await fetch('/server.js', {
+  await fetch('http://localhost:3000/add,' {
 
     method: 'POST',
     credentials: 'same-origin',
@@ -60,7 +60,7 @@ const postData = async () => {
   });
   
   //  Fetch the data from the app endpoint
-  await fetch('/server.js', {
+  await fetch('http://localhost:3000/all', {
 
     method: 'GET',
     credentials: 'same-origin',
