@@ -34,12 +34,11 @@ function sendData(request, response) {
 //  POST route
 app.post('/add', addPost );
 
-
 //  Callback function to complete POST '/add'
 function addPost (req, res) {
 
-  projectData.temp = req.body.temp;
   projectData.date = req.body.date;
+  projectData.temp = req.body.temp;
   projectData.content = req.body.content;
 
   projectData.push(req.body);
