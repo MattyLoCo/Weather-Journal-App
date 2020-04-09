@@ -26,8 +26,8 @@ const performAction = (e) => {
       'content': content,
     }
   )})
-  .then((postData) => {
-    getNewData('http://localhost:3000/all', postData)
+  .then(() => {
+    getNewData('http://localhost:3000/all')
   })
   .then((projectData) => {  
     uiUpdate(projectData)
@@ -59,7 +59,7 @@ const postWeatherData = async (url, data) => {
         Accept: "application/json",
         "Access-Control-Allow-Origin": "http://localhost:3000/",
     },
-    body: JSON.stringify(newData),
+    body: JSON.stringify(data),
   })      
   try {
     const postData = await response.json();
@@ -70,7 +70,7 @@ const postWeatherData = async (url, data) => {
 };  
 
 //  Fetch the data from the app endpoint
-const getNewData = async (url = '', data = {}) => {
+const getNewData = async (url) => {
   
   const response = await fetch(url);  
   try {
@@ -82,8 +82,7 @@ const getNewData = async (url = '', data = {}) => {
 }};
 
 //  Update UI with fetched data from projectData object
-const uiUpdate = function(data = {}) {
-
+const uiUpdate = function(data) {
   document.getElementById('date').innerHTML = JSON.stringify(data[0]);
   document.getElementById('temp').innerHTML = JSON.stringify(data[1]);
   document.getElementById('content').innerHTML = JSON.stringify(data[2]);
