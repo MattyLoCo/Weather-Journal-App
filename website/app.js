@@ -1,26 +1,26 @@
 /* Global Variables */
 const ApiKey = "91b0b55d837ff53bcd4a0c367014bd60";
-const baseURL = "api.openweathermap.org/data/2.5/weather?zip=";
+const baseURL = "https://api.openweathermap.org/data/2.5/weather?zip=";
 
 /* Helper Functions */
 //  Create a new date instance dynamically with JS
 let newDate = () => {
   let d = new Date();
   d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
-}  
+};  
 
 // Create event listener to trigger functions
 document.getElementById('generate').addEventListener('click', performAction);
 
 // Kick off app functions using promises
-const performAction = (e) => {
+function performAction(e) {
     
   let content = document.getElementById('feelings').value;
   let zip = document.getElementById('zip').value;   
 
   getWeatherData(`${baseURL}${zip},us&appid=${ApiKey}`)
   .then((newData) => {
-    postWeatherData('http://localhost:3000/add', {
+    postWeatherData('/add', {
       'date': newDate,
       'temp': newData.main.temp,
       'content': content,
@@ -38,7 +38,7 @@ const performAction = (e) => {
 )};  
 
 //  Function to retrieve API weather data
-const getWeatherData = async (url) => {
+const getWeatherData = async(url) => {
   const response = await fetch(url);
   try {
     let newData = await response.json();
@@ -46,7 +46,7 @@ const getWeatherData = async (url) => {
     return newData;       
   } catch(error) {
     console.log('Retrieval Error:', error);         
-};
+}};
 
   //  Function to post weather and user data to app endpoint
 const postWeatherData = async (url, data) => {  
@@ -56,8 +56,8 @@ const postWeatherData = async (url, data) => {
     credentials: 'same-origin',
     headers: {
         'Content-Type': 'application/json',
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:3000/",
+        'Accept': 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:3000/',        
     },
     body: JSON.stringify(data),
   })      
@@ -67,7 +67,7 @@ const postWeatherData = async (url, data) => {
     return postData;    
   } catch(error) {
     console.log('Post Error:', error);
-};  
+}};  
 
 //  Fetch the data from the app endpoint
 const getNewData = async (url) => {
