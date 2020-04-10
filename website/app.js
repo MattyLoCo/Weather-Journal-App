@@ -86,5 +86,4 @@ const uiUpdate = function(data) {
   document.getElementById('date').innerHTML = JSON.stringify(data[0]);
   document.getElementById('temp').innerHTML = JSON.stringify(data[1]);
   document.getElementById('content').innerHTML = JSON.stringify(data[2]);
-  return
-};
+}  
