@@ -20,7 +20,7 @@ function performAction(e) {
 
   getWeatherData(`${baseURL}${zip},us&appid=${ApiKey}`)
   .then((newData) => {
-    postWeatherData('/add', {
+    postWeatherData('http://localhost:3000/add', {
       'date': newDate,
       'temp': newData.main.temp,
       'content': content,
