@@ -38,7 +38,7 @@ function performAction(e) {
 )};  
 
 //  Function to retrieve API weather data
-const getWeatherData = async(url) => {
+const getWeatherData = async(url = '') => {
   const response = await fetch(url);
   try {
     let newData = await response.json();
@@ -49,15 +49,17 @@ const getWeatherData = async(url) => {
 }};
 
   //  Function to post weather and user data to app endpoint
-const postWeatherData = async (url, data) => {  
+const postWeatherData = async (url = '', data) => {  
 
-  const response = await fetch(url, {
+  const response = await fetch('http://localhost:3000/add', {
     method: 'POST',
+    mode: 'no-cors',
     credentials: 'same-origin',
     headers: {
+        'Origin': 'same-origin',
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:3000/',        
+        'Access-Control-Allow-Origin': '*',        
     },
     body: JSON.stringify(data),
   })      
@@ -70,7 +72,7 @@ const postWeatherData = async (url, data) => {
 }};  
 
 //  Fetch the data from the app endpoint
-const getNewData = async (url) => {
+const getNewData = async (url = '') => {
   
   const response = await fetch(url);  
   try {

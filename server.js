@@ -11,6 +11,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const cors = require('cors');
 app.use(cors());
+//  Enable pre-flight across-the-board
+app.options('*', cors());
 
 //  Initialize the main project folder
 app.use(express.static('website'));
@@ -23,11 +25,19 @@ const server = app.listen(port, () => {
   return console.log(`Listening on port ${port}...`);
 });
 
+//  Configure cors 
+app.use (function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Access-Control-Allow-Origin');
+  res.header('Access-Control-Allow-Methods','GET','POST','PUT','DELETE','OPTIONS')
+  next();
+})
+
 //  GET route
 app.get('/all', sendData);
 
 //  Callback function to complete GET '/all'
-function sendData(request, response) {
+function sendData(request, response, next) {
   return response.send(projectData);
 };
 
@@ -35,7 +45,7 @@ function sendData(request, response) {
 app.post('/add', addPost );
 
 //  Callback function to complete POST '/add'
-function addPost (req, res) {
+function addPost (req, res, next) {
 
   // projectData.date = req.body.date;
   // projectData.temp = req.body.temp;
