@@ -34,11 +34,11 @@ app.use (function(req, res, next) {
 })
 
 //  GET route
-app.get('/all', sendData);
+app.get('/all', sendData );
 
 //  Callback function to complete GET '/all'
 function sendData(request, response, next) {
-  return response.send(projectData);
+  response.send(projectData);
 };
 
 //  POST route
@@ -46,14 +46,11 @@ app.post('/add', addPost );
 
 //  Callback function to complete POST '/add'
 function addPost (req, res, next) {
+  let newData = req.body;
 
-  // projectData.date = req.body.date;
-  // projectData.temp = req.body.temp;
-  // projectData.content = req.body.content;
-
-  projectData.push(req.body);
+  projectData.unshift(newData);
 
   //  Debug code console test
   console.log(projectData);
-  return res.send(req.body);
+  res.send(req.body);
 };

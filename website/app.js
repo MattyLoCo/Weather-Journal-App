@@ -6,7 +6,7 @@ const baseURL = "https://api.openweathermap.org/data/2.5/weather?zip=";
 //  Create a new date instance dynamically with JS
 let newDate = () => {
   let d = new Date();
-  d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
+  return d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 };  
 
 // Create event listener to trigger functions
@@ -20,10 +20,13 @@ function performAction(e) {
 
   getWeatherData(`${baseURL}${zip},us&appid=${ApiKey}`)
   .then((newData) => {
+    //  Convert data into object literal below 
+    //  then pass it as 2nd param to postWeatherData
+
     postWeatherData('http://localhost:3000/add', {
-      'date': newDate,
-      'temp': newData.main.temp,
-      'content': content,
+      date: newDate,
+      temp: newData.main.temp,
+      content: content,
     }
   )})
   .then(() => {
@@ -32,14 +35,20 @@ function performAction(e) {
   .then((projectData) => {  
     uiUpdate(projectData)
   })
-  .catch(() => {
-    console.error('Total fail error');
+  .catch((error) => {
+    console.log('Total fail error', error);
   }
 )};  
 
 //  Function to retrieve API weather data
 const getWeatherData = async(url = '') => {
-  const response = await fetch(url);
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(response.body)
+  });
   try {
     let newData = await response.json();
     console.log(`Successful Retrieval: ${newData}`);
@@ -49,26 +58,22 @@ const getWeatherData = async(url = '') => {
 }};
 
   //  Function to post weather and user data to app endpoint
-const postWeatherData = async (url = '', data) => {  
+const postWeatherData = async (url = '', data = {}) => {  
 
-  const response = await fetch('http://localhost:3000/add', {
+  const response = await fetch(url, {
     method: 'POST',
     mode: 'no-cors',
     credentials: 'same-origin',
     headers: {
-        'Origin': 'same-origin',
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Access-Control-Allow-Origin': '*',        
+        'Content-Type': 'application/json'    
     },
     body: JSON.stringify(data),
   })      
   try {
     const postData = await response.json();
     console.log(`Successful Post: ${postData}`);
-    return postData;    
   } catch(error) {
-    console.log('Post Error:', error);
+    console.error('Post Error:', error);
 }};  
 
 //  Fetch the data from the app endpoint
@@ -76,7 +81,7 @@ const getNewData = async (url = '') => {
   
   const response = await fetch(url);  
   try {
-    const projectData = await response[0].json();
+    const projectData = await response.json();
     console.log(`Successful Retrieval: ${projectData}`);
     return projectData;
   } catch(error) {
@@ -85,7 +90,7 @@ const getNewData = async (url = '') => {
 
 //  Update UI with fetched data from projectData object
 const uiUpdate = function(data) {
-  document.getElementById('date').innerHTML = JSON.stringify(data[0]);
-  document.getElementById('temp').innerHTML = JSON.stringify(data[1]);
-  document.getElementById('content').innerHTML = JSON.stringify(data[2]);
+  document.getElementById('date').innerHTML = JSON.parse(data[0]);
+  document.getElementById('temp').innerHTML = JSON.parse(data[1]);
+  document.getElementById('content').innerHTML = JSON.parse(data[2]);
 }  
