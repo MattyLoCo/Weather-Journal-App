@@ -41,13 +41,16 @@ function performAction(e) {
 )};  
 
 //  Function to retrieve API weather data
-const getWeatherData = async(url = '') => {
+const getWeatherData = async(url) => {
   const response = await fetch(url, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(response.body)
+      'Origin': 'http://localhost:3000', 
+      'Content-Type': 'application/json',      
+      'Accept': 'application/json', 
+      'Access-Control-Allow-Origin': '*',
+      // 'optionsSuccessStatus': '200',
+    }
   });
   try {
     let newData = await response.json();
@@ -63,7 +66,6 @@ const postWeatherData = async (url = '', data = {}) => {
   const response = await fetch(url, {
     method: 'POST',
     mode: 'no-cors',
-    credentials: 'same-origin',
     headers: {
         'Content-Type': 'application/json'    
     },
@@ -79,7 +81,13 @@ const postWeatherData = async (url = '', data = {}) => {
 //  Fetch the data from the app endpoint
 const getNewData = async (url = '') => {
   
-  const response = await fetch(url);  
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(response.body)
+  });  
   try {
     const projectData = await response.json();
     console.log(`Successful Retrieval: ${projectData}`);
