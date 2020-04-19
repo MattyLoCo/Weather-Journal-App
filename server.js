@@ -12,10 +12,10 @@ app.use(bodyParser.json());
 const cors = require('cors');
 app.use(cors());
 //  Enable pre-flight across-the-board
-app.options('*', cors({
-  origin:['http://localhost:3000', 'http://192.168.1.24:3000'], 
-  credentials: true
-}));
+// app.options('*', cors({
+//   origin:['http://localhost:3000', 'http://192.168.1.24:3000'], 
+//   credentials: true
+// }));
 
 //  Initialize the main project folder
 app.use(express.static('website'));
@@ -29,15 +29,15 @@ const server = app.listen(port, () => {
 });
 
 //  Configure cors options
-app.all ('/', function(req, res, next) {
+// app.all ('/', function(req, res, next) {
 
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
-  res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, Accept, Access-Control-Allow-Origin, X-PINGOTHER, X-Requested-With');
-  res.header('Access-Control-Allow-Methods','GET','POST','OPTIONS');      
-  res.header('Access-Control-Allow-Credentials', true);
-  // res.header('optionsSuccessStatus', 200);
-  next();
-})
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Headers', 'Content-Type');
+//   res.header('Access-Control-Allow-Methods','GET');      
+//   res.header('Access-Control-Allow-Credentials', true);
+//   res.header('optionsSuccessStatus', 200);
+//   next();
+// })
 
 //  GET route
 app.get('/all', sendData );
@@ -51,12 +51,17 @@ function sendData(request, response, next) {
 app.post('/add', addPost );
 
 //  Callback function to complete POST '/add'
-function addPost (req, res, next) {
+function addPost (req, res) {
   let newData = req.body;
+  let newEntry = {
+    date: newData.date,
+    temp: newData.temp,
+    content: newData.content
+  };
 
-  projectData.unshift(newData);
+  projectData.push(newEntry);
 
   //  Debug code console test
-  console.log(projectData);
-  res.send(req.body);
+  console.log(newEntry);
+  res.send(newEntry);
 };

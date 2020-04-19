@@ -15,7 +15,7 @@ document.getElementById('generate').addEventListener('click', performAction);
 // Kick off app functions using promises
 function performAction(e) {
     
-  let content = document.getElementById('feelings').value;
+  let feelings = document.getElementById('feelings').value;
   let zip = document.getElementById('zip').value;   
 
   getWeatherData(`${baseURL}${zip},us&appid=${ApiKey}`)
@@ -26,7 +26,7 @@ function performAction(e) {
     postWeatherData('http://localhost:3000/add', {
       date: newDate,
       temp: newData.main.temp,
-      content: content,
+      content: feelings,
     }
   )})
   .then(() => {
@@ -42,20 +42,21 @@ function performAction(e) {
 
 //  Function to retrieve API weather data
 const getWeatherData = async(url) => {
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Origin': 'http://localhost:3000', 
-      'Content-Type': 'application/json',      
-      'Accept': 'application/json', 
-      'Access-Control-Allow-Origin': '*',
+  const response = await fetch(url)
+    // method: 'GET',
+    // mode: 'no-cors',
+    // headers: {
+      // 'Origin': 'http://localhost:3000', 
+      // 'Content-Type': 'application/json'      
+      // 'Accept': 'application/json', 
+      // 'Access-Control-Allow-Origin': '*',
       // 'optionsSuccessStatus': '200',
-    }
-  });
+  
+  // });
   try {
     let newData = await response.json();
     console.log(`Successful Retrieval: ${newData}`);
-    return newData;       
+    // return newData;       
   } catch(error) {
     console.log('Retrieval Error:', error);         
 }};
@@ -64,12 +65,12 @@ const getWeatherData = async(url) => {
 const postWeatherData = async (url = '', data = {}) => {  
 
   const response = await fetch(url, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-        'Content-Type': 'application/json'    
-    },
-    body: JSON.stringify(data),
+    method: 'POST'
+  //   mode: 'no-cors',
+  //   headers: {
+  //       'Content-Type': 'application/json'    
+  //   },
+  //   body: JSON.stringify(data),
   })      
   try {
     const postData = await response.json();
@@ -81,13 +82,13 @@ const postWeatherData = async (url = '', data = {}) => {
 //  Fetch the data from the app endpoint
 const getNewData = async (url = '') => {
   
-  const response = await fetch(url, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(response.body)
-  });  
+  const response = await fetch(url)
+  //   method: 'GET',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: JSON.stringify(response.body)
+  // });  
   try {
     const projectData = await response.json();
     console.log(`Successful Retrieval: ${projectData}`);
