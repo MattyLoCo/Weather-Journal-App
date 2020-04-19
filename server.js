@@ -53,6 +53,7 @@ app.post('/add', addPost );
 //  Callback function to complete POST '/add'
 function addPost (req, res) {
   let newData = req.body;
+
   let newEntry = {
     date: newData.date,
     temp: newData.temp,

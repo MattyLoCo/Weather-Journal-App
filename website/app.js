@@ -22,11 +22,12 @@ function performAction(e) {
   .then((newData) => {
     //  Convert data into object literal below 
     //  then pass it as 2nd param to postWeatherData
+    let d = newData;
 
-    postWeatherData('http://localhost:3000/add', {
+    postWeatherData('http://localhost:3000/add', {      
       date: newDate,
-      temp: newData.main.temp,
-      content: feelings,
+      temp: d.main.temp,
+      content: feelings
     }
   )})
   .then(() => {
@@ -55,8 +56,8 @@ const getWeatherData = async(url) => {
   // });
   try {
     let newData = await response.json();
-    console.log(`Successful Retrieval: ${newData}`);
-    // return newData;       
+    console.log(`Successful Retrieval: ${JSON.stringify(newData)}`);
+    return newData;       
   } catch(error) {
     console.log('Retrieval Error:', error);         
 }};
