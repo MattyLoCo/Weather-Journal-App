@@ -3,11 +3,9 @@ const ApiKey = "91b0b55d837ff53bcd4a0c367014bd60";
 const baseURL = "https://api.openweathermap.org/data/2.5/weather?zip=";
 
 /* Helper Functions */
-//  Create a new date instance dynamically with JS
-let newDate = () => {
-  let d = new Date();
-  return `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
-};
+// Create a new date instance dynamically with JS
+let d = new Date();
+let newDate = d.getMonth()+'/'+ d.getDate()+'/'+ d.getFullYear();
 
 /* Event Listener(s) */
 document.getElementById("generate").addEventListener("click", performAction);
@@ -29,7 +27,7 @@ function performAction(e) {
       console.log(feelings);
       let object = {
         date: newDate,
-        temp: temperature,
+        temp: `${temperature} Fahrenheit`,
         content: feelings,
       };
       //  Debug test
@@ -37,10 +35,10 @@ function performAction(e) {
       return object;
     })
     .then((object) => {
-      postWeatherData("http://localhost:3000/add", object);
-    })
+      postWeatherData("http://localhost:3000/add", object)
+    })  
     .then(() => {
-      getNewData("http://localhost:3000/all");
+      return getNewData("http://localhost:3000/all");      
     })
     .then((projectData) => {
       uiUpdate(projectData);
@@ -62,11 +60,14 @@ const getWeatherData = async (url) => {
   }
 };
 
-//  Function to post weather and user data to app endpoint
-const postWeatherData = async (url = "", data) => {
+//  Function to post weather
+const postWeatherData = async (url = "", data = {}) => {
   const response = await fetch(url, {
     method: "POST",
-    body: JSON.stringify(data),
+    headers: {
+      "content-type": "application/json"
+    },
+    body: JSON.stringify(data)
   });
   try {
     const postData = await response.json();
@@ -81,16 +82,21 @@ const getNewData = async (url = "") => {
   const response = await fetch(url);
   try {
     const projectData = await response.json();
-    console.log(`Successful Retrieval: ${JSON.stringify(projectData)}`);
+    console.log(`Successful Retrieval: ${projectData}`);
     return projectData;
   } catch (error) {
     console.log("Retrieval Error:", error);
   }
 };
 
-//  Update UI with fetched data from projectData object
-const uiUpdate = (data) => {
-  document.getElementById("date").innerHTML = data.date;
-  document.getElementById("temp").innerHTML = data.temp;
-  document.getElementById("content").innerHTML = data.content;
+//  Update UI with fetched data from projectData 
+const uiUpdate = function(data) {
+  //  Joining in order to get rid of quotes around entry objects in array
+  let newArray = data.join();
+  //  Debug check  
+  console.log(newArray);
+
+  document.getElementById("date").innerHTML = `The date is ${newArray[-1]}.`;
+  document.getElementById("temp").innerHTML = `The current temperature is ${newArray[-1]}.`;
+  document.getElementById("content").innerHTML = `You're feeling ${newArray[-1]}.`;
 };

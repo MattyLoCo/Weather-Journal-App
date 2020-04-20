@@ -35,12 +35,10 @@ function sendData(request, response, next) {
 app.post('/add', addPost );
 
 //  Callback function to complete POST '/add'
-function addPost (req, res) {
-  let newData = req.body;
-
+function addPost (req, res, next) {
+  let newData = JSON.stringify(req.body);
   projectData.push(newData);
-
   //  Debug code console test
-  console.log(JSON.stringify(newData));
-  res.send(newData);
+  console.log(newData);
+  return res.send(newData);
 };
