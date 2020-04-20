@@ -11,11 +11,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 const cors = require('cors');
 app.use(cors());
-//  Enable pre-flight across-the-board
-// app.options('*', cors({
-//   origin:['http://localhost:3000', 'http://192.168.1.24:3000'], 
-//   credentials: true
-// }));
 
 //  Initialize the main project folder
 app.use(express.static('website'));
@@ -27,17 +22,6 @@ const port = process.env.PORT || 3000;
 const server = app.listen(port, () => {
   return console.log(`Express server listening on port ${port}...`);
 });
-
-//  Configure cors options
-// app.all ('/', function(req, res, next) {
-
-//   res.header('Access-Control-Allow-Origin', '*');
-//   res.header('Access-Control-Allow-Headers', 'Content-Type');
-//   res.header('Access-Control-Allow-Methods','GET');      
-//   res.header('Access-Control-Allow-Credentials', true);
-//   res.header('optionsSuccessStatus', 200);
-//   next();
-// })
 
 //  GET route
 app.get('/all', sendData );

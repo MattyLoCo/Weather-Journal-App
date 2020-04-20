@@ -44,16 +44,6 @@ function performAction(e) {
 //  Function to retrieve API weather data
 const getWeatherData = async(url) => {
   const response = await fetch(url)
-    // method: 'GET',
-    // mode: 'no-cors',
-    // headers: {
-      // 'Origin': 'http://localhost:3000', 
-      // 'Content-Type': 'application/json'      
-      // 'Accept': 'application/json', 
-      // 'Access-Control-Allow-Origin': '*',
-      // 'optionsSuccessStatus': '200',
-  
-  // });
   try {
     let newData = await response.json();
     console.log(`Successful Retrieval: ${JSON.stringify(newData)}`);
@@ -67,11 +57,6 @@ const postWeatherData = async (url = '', data = {}) => {
 
   const response = await fetch(url, {
     method: 'POST'
-  //   mode: 'no-cors',
-  //   headers: {
-  //       'Content-Type': 'application/json'    
-  //   },
-  //   body: JSON.stringify(data),
   })      
   try {
     const postData = await response.json();
@@ -83,13 +68,7 @@ const postWeatherData = async (url = '', data = {}) => {
 //  Fetch the data from the app endpoint
 const getNewData = async (url = '') => {
   
-  const response = await fetch(url)
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json'
-  //   },
-  //   body: JSON.stringify(response.body)
-  // });  
+  const response = await fetch(url) 
   try {
     const projectData = await response.json();
     console.log(`Successful Retrieval: ${projectData}`);
@@ -99,8 +78,8 @@ const getNewData = async (url = '') => {
 }};
 
 //  Update UI with fetched data from projectData object
-const uiUpdate = function(data) {
-  document.getElementById('date').innerHTML = JSON.parse(data[0]);
-  document.getElementById('temp').innerHTML = JSON.parse(data[1]);
-  document.getElementById('content').innerHTML = JSON.parse(data[2]);
+const uiUpdate = asyn (data) => {
+  document.getElementById('date').innerHTML = data["date"];
+  document.getElementById('temp').innerHTML = data["temp"];
+  document.getElementById('content').innerHTML = data["content"];
 }  
