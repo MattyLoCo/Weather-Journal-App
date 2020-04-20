@@ -96,7 +96,7 @@ const uiUpdate = function(data) {
   //  Debug check  
   console.log(newArray);
 
-  document.getElementById("date").innerHTML = `The date is ${newArray[-1]}.`;
-  document.getElementById("temp").innerHTML = `The current temperature is ${newArray[-1]}.`;
-  document.getElementById("content").innerHTML = `You're feeling ${newArray[-1]}.`;
+  document.getElementById("date").innerHTML = `The date is ${newArray[-1]["date"]}.`;
+  document.getElementById("temp").innerHTML = `The current temperature is ${newArray[-1]["temp"]}.`;
+  document.getElementById("content").innerHTML = `You're feeling ${newArray[-1]["content"]}.`;
 };
