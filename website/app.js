@@ -16,18 +16,24 @@ document.getElementById("generate").addEventListener("click", performAction);
 function performAction(e) {
   let zip = document.getElementById("zip").value;
 
-  getWeatherData(`${baseURL}${zip},us&appid=${ApiKey}`)
+  getWeatherData(`${baseURL}${zip}&units=imperial&appid=${ApiKey}`)
     .then(function getTemp(newData) {
       let temperature = newData.main.temp;
+      //  Debug test
+      console.log(`temp is ${temperature} Fahrenheit`);
       return temperature;
     })
     .then(function createEntry(temperature) {
       let feelings = document.getElementById("feelings").value;
+      //  Debug test
+      console.log(feelings);
       let object = {
         date: newDate,
         temp: temperature,
         content: feelings,
       };
+      //  Debug test
+      console.log(JSON.stringify(object));
       return object;
     })
     .then((object) => {
