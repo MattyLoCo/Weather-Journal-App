@@ -38,15 +38,9 @@ app.post('/add', addPost );
 function addPost (req, res) {
   let newData = req.body;
 
-  let newEntry = {
-    date: newData.date,
-    temp: newData.temp,
-    content: newData.content
-  };
-
-  projectData.push(newEntry);
+  projectData.push(newData);
 
   //  Debug code console test
-  console.log(newEntry);
-  res.send(newEntry);
+  console.log(JSON.stringify(newData));
+  res.send(newData);
 };

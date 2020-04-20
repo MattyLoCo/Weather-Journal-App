@@ -6,80 +6,85 @@ const baseURL = "https://api.openweathermap.org/data/2.5/weather?zip=";
 //  Create a new date instance dynamically with JS
 let newDate = () => {
   let d = new Date();
-  return d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
-};  
+  return `${d.getMonth()}/${d.getDate()}/${d.getFullYear()}`;
+};
 
-// Create event listener to trigger functions
-document.getElementById('generate').addEventListener('click', performAction);
+/* Event Listener(s) */
+document.getElementById("generate").addEventListener("click", performAction);
 
 // Kick off app functions using promises
 function performAction(e) {
-    
-  let feelings = document.getElementById('feelings').value;
-  let zip = document.getElementById('zip').value;   
+  let zip = document.getElementById("zip").value;
 
   getWeatherData(`${baseURL}${zip},us&appid=${ApiKey}`)
-  .then((newData) => {
-    //  Convert data into object literal below 
-    //  then pass it as 2nd param to postWeatherData
-    let d = newData;
-
-    postWeatherData('http://localhost:3000/add', {      
-      date: newDate,
-      temp: d.main.temp,
-      content: feelings
-    }
-  )})
-  .then(() => {
-    getNewData('http://localhost:3000/all')
-  })
-  .then((projectData) => {  
-    uiUpdate(projectData)
-  })
-  .catch((error) => {
-    console.log('Total fail error', error);
-  }
-)};  
+    .then(function getTemp(newData) {
+      let temperature = newData.main.temp;
+      return temperature;
+    })
+    .then(function createEntry(temperature) {
+      let feelings = document.getElementById("feelings").value;
+      let object = {
+        date: newDate,
+        temp: temperature,
+        content: feelings,
+      };
+      return object;
+    })
+    .then((object) => {
+      postWeatherData("http://localhost:3000/add", object);
+    })
+    .then(() => {
+      getNewData("http://localhost:3000/all");
+    })
+    .then((projectData) => {
+      uiUpdate(projectData);
+    })
+    .catch((error) => {
+      console.log("Total fail error", error);
+    });
+}
 
 //  Function to retrieve API weather data
-const getWeatherData = async(url) => {
-  const response = await fetch(url)
+const getWeatherData = async (url) => {
+  const response = await fetch(url);
   try {
     let newData = await response.json();
     console.log(`Successful Retrieval: ${JSON.stringify(newData)}`);
-    return newData;       
-  } catch(error) {
-    console.log('Retrieval Error:', error);         
-}};
+    return newData;
+  } catch (error) {
+    console.log("Retrieval Error:", error);
+  }
+};
 
-  //  Function to post weather and user data to app endpoint
-const postWeatherData = async (url = '', data = {}) => {  
-
+//  Function to post weather and user data to app endpoint
+const postWeatherData = async (url = "", data) => {
   const response = await fetch(url, {
-    method: 'POST'
-  })      
+    method: "POST",
+    body: JSON.stringify(data),
+  });
   try {
     const postData = await response.json();
-    console.log(`Successful Post: ${postData}`);
-  } catch(error) {
-    console.error('Post Error:', error);
-}};  
+    console.log(`Successful Post: ${JSON.stringify(postData)}`);
+  } catch (error) {
+    console.error("Post Error:", error);
+  }
+};
 
 //  Fetch the data from the app endpoint
-const getNewData = async (url = '') => {
-  
-  const response = await fetch(url) 
+const getNewData = async (url = "") => {
+  const response = await fetch(url);
   try {
     const projectData = await response.json();
-    console.log(`Successful Retrieval: ${projectData}`);
+    console.log(`Successful Retrieval: ${JSON.stringify(projectData)}`);
     return projectData;
-  } catch(error) {
-    console.log('Retrieval Error:', error);
-}};
+  } catch (error) {
+    console.log("Retrieval Error:", error);
+  }
+};
 
 //  Update UI with fetched data from projectData object
-const uiUpdate = asyn (data) => {
-  document.getElementById('date').innerHTML = data["date"];
-  document.getElementById('temp').innerHTML = data["temp"];
-  document.getElementById('content').innerHTML = data["content"];
-}  
+const uiUpdate = (data) => {
+  document.getElementById("date").innerHTML = data.date;
+  document.getElementById("temp").innerHTML = data.temp;
+  document.getElementById("content").innerHTML = data.content;
+};
