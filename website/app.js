@@ -27,8 +27,8 @@ function performAction(e) {
       console.log(feelings);
       let object = {
         date: newDate,
-        temp: `${temperature} Fahrenheit`,
-        content: feelings,
+        temp: `${temperature} degrees Fahrenheit`,
+        content: feelings
       };
       //  Debug test
       console.log(JSON.stringify(object));
@@ -91,12 +91,15 @@ const getNewData = async (url = "") => {
 
 //  Update UI with fetched data from projectData 
 const uiUpdate = function(data) {
-  //  Joining in order to get rid of quotes around entry objects in array
-  let newArray = data.join();
+  
+  let newArray = JSON.parse(data);
+  let date = newArray.date;
+  let temp = newArray.temp;
+  let content = newArray.content;
   //  Debug check  
-  console.log(newArray);
-
-  document.getElementById("date").innerHTML = `The date is ${newArray[-1]["date"]}.`;
-  document.getElementById("temp").innerHTML = `The current temperature is ${newArray[-1]["temp"]}.`;
-  document.getElementById("content").innerHTML = `You're feeling ${newArray[-1]["content"]}.`;
+  console.log(`newArray is a ${typeof newArray}`);
+  
+  document.getElementById("date").innerHTML = `The date is ${date}.`;
+  document.getElementById("temp").innerHTML = `The current temperature is ${temp}.`;
+  document.getElementById("content").innerHTML = `You're feeling ${content}.`;
 };

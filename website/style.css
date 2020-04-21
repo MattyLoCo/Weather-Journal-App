@@ -1,17 +1,20 @@
 body{
     background: #fffff8;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;    
+}
+
+.clearfix {
+    overflow: auto;
 }
 
 #app{
-    display: grid;
-    grid-auto-rows: minmax(150px, auto);
-    /* grid-template-columns:  */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     height:100vh;
     background: #f23557;
     color: #f0d43a;
-    justify-content: center;
-    grid-gap: 1em;
     font-size: 20px;
     font-family: 'Oswald', sans-serif;
 }
@@ -25,7 +28,8 @@ body{
 }
 
 #entryHolder{
-
+    height: 200px;
+    width: 90vw;
 }
 
 #date{
@@ -41,16 +45,22 @@ body{
 }
 
 .headline {
-
+    font-size: 30px;
 }
+
 .title{
 
+}
+
+.myInput {
+    height: 150px;
 }
 
 /*  Basic Styling To Override Default For Basic HTML Elements */
 label{
     display:block;
     font-size: 27px;
+    opacity: 0.9;
 }
 
 input{
@@ -65,13 +75,15 @@ input{
 }
 
 button{
-    width: 400px;
-    height: 100px;
+    width: 200px;
+    height: 50px;
+    margin: 15px;
     background: #3b4a6b;
     color: #f0d43a;
     font-size: 26px;
     font-family: 'Oswald', sans-serif;
     border: none;
+    border-radius: 25px;
     box-shadow: 2px 4px 5px #444;
 }
 h1{
@@ -88,8 +100,9 @@ textarea{
 input:focus,
 select:focus,
 textarea:focus,
-button:focus {
-    outline: none;
+button:hover {
+    box-shadow: 10px;
+    border: none;
 }
 /* Style for Placeholder Text*/
 ::placeholder { /* Firefox, Chrome, Opera */ 
